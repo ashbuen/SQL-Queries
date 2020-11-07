@@ -73,14 +73,11 @@ SELECT * FROM employees
 SELECT * FROM salaries
 SELECT * FROM titles
 
--- List employee number, full name, sex, and salary --
-SELECT salary FROM salaries 
-WHERE salary IN(
-	SELECT emp_no FROM salaries
-	WHERE emp_no IN(
+-- 1. List employee number, full name, sex, and salary --
+SELECT emp_no, first_name, last_name, sex FROM employees 
+SELECT emp_no, salary FROM salaries
 
-SELECT emp_no, first_name, last_name, sex FROM employees
-)
-);
-
-
+-- 2. List full name and hire date for employees hired in 1986 --
+SELECT first_name, last_name, hire_date
+FROM employees
+WHERE hire_date LIKE '%1986';
