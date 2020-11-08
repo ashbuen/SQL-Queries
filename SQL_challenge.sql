@@ -81,3 +81,48 @@ SELECT emp_no, salary FROM salaries
 SELECT first_name, last_name, hire_date
 FROM employees
 WHERE hire_date LIKE '%1986';
+
+-- 3. List manager's full name with employee number, dept number, dept name --
+CREATE VIEW employee_name_title AS
+SELECT e.emp_no, e.emp_title, e.first_name, e.last_name, t.title
+FROM employees AS e
+INNER JOIN titles AS t ON
+e.emp_title=t.title;
+
+SELECT *
+FROM employee_name_title
+WHERE emp_no IN(
+SELECT emp_no 
+FROM dept_manager
+WHERE dept_no IN(
+SELECT dept_name
+)
+)
+
+SELECT dept_name FROM departments
+WHERE dept_no IN(
+	SELECT dept_no
+	FROM dept_manager
+	WHERE emp_no IN(
+	SELECT emp_no
+	FROM employees
+	WHERE first_name IN(
+	SELECT first_name 
+	FROM employees
+	WHERE last_name IN(
+	SELECT last_name
+	FROM employees 
+	WHERE emp_title IN(
+	SELECT emp_title
+	FROM employees
+	WHERE emp_title IN(
+	SELECT title
+	FROM titles
+	WHERE title LIKE 'manager'
+	)
+	)
+	)
+	)
+	)
+);
+-- 4.
