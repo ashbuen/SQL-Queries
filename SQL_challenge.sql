@@ -83,48 +83,37 @@ FROM employees
 WHERE hire_date LIKE '%1986';
 
 -- 3. List manager's full name with employee number, dept number, dept name --
-CREATE VIEW employee_name_title AS
-SELECT e.emp_no, e.emp_title, e.first_name, e.last_name, t.title
-FROM employees AS e
-INNER JOIN titles AS t ON
-e.emp_title=t.title;
-
-SELECT *
-FROM employee_name_title
-WHERE emp_no IN(
-SELECT emp_no 
-FROM dept_manager
-WHERE dept_no IN(
-SELECT dept_name
-)
-)
-
-SELECT dept_name FROM departments
-WHERE dept_no IN(
-	SELECT dept_no
-	FROM dept_manager
-	WHERE emp_no IN(
-	SELECT emp_no
-	FROM employees
-	WHERE first_name IN(
-	SELECT first_name 
-	FROM employees
-	WHERE last_name IN(
-	SELECT last_name
-	FROM employees 
+SELECT title FROM titles
+WHERE title_id IN(
+	SELECT emp_title FROM employees
 	WHERE emp_title IN(
-	SELECT emp_title
-	FROM employees
+	SELECT emp_no FROM employees
 	WHERE emp_title IN(
-	SELECT title
-	FROM titles
+	SELECT title_id FROM titles
+	WHERE title IN(
+	SELECT title FROM titles
 	WHERE title LIKE 'manager'
 	)
 	)
 	)
-	)
-	)
 );
+
+
+CREATE VIEW managers AS
+SELECT di.emp_no, di.dept_no, di.dept_name, e.first_name, e.last_name, e.emp_title
+FROM departments_info AS di
+INNER JOIN employees AS e ON
+di.emp_no=e.emp_no;
+
+CREATE VIEW managers_info AS
+SELECT m.emp_no, m.dept_no, m.dept_name, m.first_name, m.last_name, t.title
+FROM managers AS m
+INNER JOIN titles AS t ON
+m.emp_title=t.title_id;
+
+SELECT * FROM managers_info
+WHERE title LIKE '%Manager'
+
 -- 4. List dept of each employee with employee number, full name, and department name --
 CREATE VIEW departments_and_employees AS
 SELECT de.emp_no, de.dept_no, d.dept_name
@@ -132,34 +121,23 @@ FROM dept_emp AS de
 INNER JOIN departments AS d ON
 de.dept_no=d.dept_no;
 
-SELECT * FROM departments_and_employees;
-
-SELECT emp_no, first_name, last_name FROM employees
-WHERE emp_no IN(
-	SELECT emp_no
-	FROM departments_and_employees
-	WHERE (dept_name, dept_no) IN(
-	SELECT dept_name, dept_no
-	FROM departments_and_employees
-	)
-)
-
 SELECT * FROM departments_and_employees
-WHERE dept_no IN(
-	SELECT dept_no 
-	FROM dept_manager
-	WHERE emp_no IN(
-	SELECT emp_no
-	FROM employees
-	WHERE (first_name, last_name) IN(
-	SELECT first_name, last_name
-	FROM employees
-	)
-	)
-)
 
+CREATE VIEW departments_info AS
+SELECT dae.emp_no, dae.dept_no, dae.dept_name
+FROM departments_and_employees AS dae
+INNER JOIN dept_manager AS dm ON
+dae.emp_no=dm.emp_no;
 
+SELECT * FROM departments_info;
 
+CREATE VIEW employee_departments AS
+SELECT di.emp_no, di.dept_no, di.dept_name, e.first_name, e.last_name
+FROM departments_info AS di
+INNER JOIN employees AS e ON
+di.emp_no=e.emp_no;
+
+SELECT * FROM employee_departments
 -- 5. List full name and sex of employees with first name "Hercules" and last name begins with "B" --
 
 -- 6. List all employees in sales department with full name, employee number and department name --
