@@ -6,7 +6,7 @@ CREATE TABLE "dept_manager" (
     "dept_no" VARCHAR   NOT NULL,
     "emp_no" INT   NOT NULL
 );
-
+ 
 CREATE TABLE "employees" (
     "emp_no" INT   NOT NULL,
     "emp_title" VARCHAR   NOT NULL,
