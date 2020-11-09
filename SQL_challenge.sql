@@ -22,7 +22,10 @@ CREATE TABLE "employees" (
 
 CREATE TABLE "departments" (
     "dept_no" VARCHAR   NOT NULL,
-    "dept_name" VARCHAR   NOT NULL
+    "dept_name" VARCHAR   NOT NULL,
+	CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_name"
+     )
 );
 
 CREATE TABLE "salaries" (
@@ -105,7 +108,7 @@ FROM dept_emp AS de
 INNER JOIN departments AS d ON
 de.dept_no=d.dept_no;
 
-SELECT * FROM departments_and_employees
+SELECT * FROM departments_and_employees;
 
 CREATE VIEW departments_info AS
 SELECT dae.emp_no, dae.dept_no, dae.dept_name
