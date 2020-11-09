@@ -146,11 +146,19 @@ f.first_name=l.first_name
 SELECT * FROM Hercules_B
 
 -- 6. List all employees in sales department with full name, employee number and department name --
+SELECT first_name, last_name, emp_no FROM employees
+
+
 
 -- 7. List all employees in sales AND development departments with employee number, full name, and department name --
+SELECT first_name, last_name, emp_no, dept_name 
+FROM employee_departments
+WHERE dept_name LIKE '%development'
 
 -- 8. List frequency count of employees last name in DESC 
-
+SELECT COUNT(last_name) AS last_name_count, last_name FROM employees
+GROUP BY last_name
+ORDER BY (last_name_count) DESC
 
 -- -- -- -- -- -- -- -- -- -- -- -- BONUS -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
