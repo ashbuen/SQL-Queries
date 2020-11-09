@@ -31,8 +31,7 @@ CREATE TABLE "departments" (
 CREATE TABLE "salaries" (
     "emp_no" INT   NOT NULL,
     "salary" INT   NOT NULL
-     )
-);
+); 
 
 CREATE TABLE "titles" (
     "title_id" VARCHAR   NOT NULL,
@@ -176,4 +175,3 @@ SELECT COUNT(last_name) AS last_name_count, last_name
 FROM employees
 GROUP BY last_name
 ORDER BY (last_name_count) DESC;
-
