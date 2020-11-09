@@ -46,26 +46,6 @@ CREATE TABLE "dept_emp" (
     "dept_no" VARCHAR   NOT NULL
 );
 
-ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "departments" ("");
-
-ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "employees" ("");
-
-ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "salaries" ("");
-
-ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title" FOREIGN KEY("emp_title")
-REFERENCES "titles" ("");
-
-ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "dept_emp" ("");
-
-ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "dept_manager" ("");
-
-ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "departments" ("");
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- Run all tables to ensure proper data was extracted --
@@ -92,6 +72,21 @@ FROM employees
 WHERE hire_date LIKE '%1986';
 
 -- 3. List manager's full name with employee number, dept number, dept name --
+CREATE VIEW departments_and_employees AS
+SELECT de.emp_no, de.dept_no, d.dept_name
+FROM dept_emp AS de
+INNER JOIN departments AS d ON
+de.dept_no=d.dept_no;
+
+SELECT * FROM departments_and_employees;
+
+CREATE VIEW departments_info AS
+SELECT dae.emp_no, dae.dept_no, dae.dept_name
+FROM departments_and_employees AS dae
+INNER JOIN dept_manager AS dm ON
+dae.emp_no=dm.emp_no;
+
+SELECT * FROM departments_info;
 CREATE VIEW managers AS
 SELECT di.emp_no, di.dept_no, di.dept_name, e.first_name, e.last_name, e.emp_title
 FROM departments_info AS di
@@ -109,22 +104,6 @@ FROM managers_info
 WHERE title LIKE '%Manager';
 
 -- 4. List dept of each employee with employee number, full name, and department name --
-CREATE VIEW departments_and_employees AS
-SELECT de.emp_no, de.dept_no, d.dept_name
-FROM dept_emp AS de
-INNER JOIN departments AS d ON
-de.dept_no=d.dept_no;
-
-SELECT * FROM departments_and_employees;
-
-CREATE VIEW departments_info AS
-SELECT dae.emp_no, dae.dept_no, dae.dept_name
-FROM departments_and_employees AS dae
-INNER JOIN dept_manager AS dm ON
-dae.emp_no=dm.emp_no;
-
-SELECT * FROM departments_info;
-
 CREATE VIEW employee_departments AS
 SELECT di.emp_no, di.dept_name, e.first_name, e.last_name
 FROM departments_info AS di
