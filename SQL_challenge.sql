@@ -153,17 +153,19 @@ f.first_name=l.first_name
 SELECT * FROM Hercules_B
 
 -- 6. List all employees in sales department with full name, employee number and department name --
-CREATE VIEW sales AS
 SELECT first_name, last_name, emp_no, dept_name 
 FROM employee_departments
-WHERE dept_name = '%sales'
-
+WHERE dept_name = 'Sales'
 
 
 -- 7. List all employees in sales AND development departments with employee number, full name, and department name --
 SELECT first_name, last_name, emp_no, dept_name 
 FROM employee_departments
-WHERE dept_name LIKE '%development'
+WHERE dept_name = 'Sales'
+UNION 
+SELECT first_name, last_name, emp_no, dept_name 
+FROM employee_departments
+WHERE dept_name LIKE 'Development'
 
 -- 8. List frequency count of employees last name in DESC 
 SELECT COUNT(last_name) AS last_name_count, last_name FROM employees
