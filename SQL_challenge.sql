@@ -70,21 +70,21 @@ REFERENCES "departments" ("");
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- Run all tables to ensure proper data was extracted --
-SELECT * FROM departments
-SELECT * FROM dept_emp
-SELECT * FROM dept_manager
-SELECT * FROM employees
-SELECT * FROM salaries
-SELECT * FROM titles
+SELECT * FROM departments;
+SELECT * FROM dept_emp;
+SELECT * FROM dept_manager;
+SELECT * FROM employees;
+SELECT * FROM salaries;
+SELECT * FROM titles;
 
 -- 1. List employee number, full name, sex, and salary --
 CREATE VIEW employee_salary AS
 SELECT e.emp_no, e.first_name, e.last_name, e.sex, s.salary
 FROM employees AS e
 INNER JOIN salaries AS s ON
-e.emp_no=s.emp_no
+e.emp_no=s.emp_no;
 
-SELECT * FROM employee_salary
+SELECT * FROM employee_salary;
 
 
 -- 2. List full name and hire date for employees hired in 1986 --
@@ -105,8 +105,9 @@ FROM managers AS m
 INNER JOIN titles AS t ON
 m.emp_title=t.title_id;
 
-SELECT * FROM managers_info
-WHERE title LIKE '%Manager'
+SELECT * 
+FROM managers_info
+WHERE title LIKE '%Manager';
 
 -- 4. List dept of each employee with employee number, full name, and department name --
 CREATE VIEW departments_and_employees AS
@@ -126,36 +127,39 @@ dae.emp_no=dm.emp_no;
 SELECT * FROM departments_info;
 
 CREATE VIEW employee_departments AS
-SELECT di.emp_no, di.dept_no, di.dept_name, e.first_name, e.last_name
+SELECT di.emp_no, di.dept_name, e.first_name, e.last_name
 FROM departments_info AS di
 INNER JOIN employees AS e ON
 di.emp_no=e.emp_no;
 
-SELECT * FROM employee_departments
+SELECT * 
+FROM employee_departments;
 
 -- 5. List full name and sex of employees with first name "Hercules" and last name begins with "B" --
 CREATE VIEW last_names_B AS
-SELECT first_name, last_name, sex FROM employees
-WHERE last_name LIKE ('B%')
-SELECT * FROM last_names_B
+SELECT first_name, last_name, sex 
+FROM employees
+WHERE last_name LIKE ('B%');
+SELECT * FROM last_names_B;
 
 CREATE VIEW first_name_Hercules AS
-SELECT first_name, last_name, sex FROM employees
-WHERE first_name LIKE '%Hercules'
-SELECT * FROM first_name_Hercules
+SELECT first_name, last_name, sex 
+FROM employees
+WHERE first_name LIKE '%Hercules';
+SELECT * FROM first_name_Hercules;
 
 CREATE VIEW Hercules_B AS
 SELECT f.first_name, l.last_name, f.sex
 FROM first_name_Hercules as f
 INNER JOIN last_names_B AS l ON
-f.first_name=l.first_name
+f.first_name=l.first_name;
 
-SELECT * FROM Hercules_B
+SELECT * FROM Hercules_B;
 
 -- 6. List all employees in sales department with full name, employee number and department name --
 SELECT first_name, last_name, emp_no, dept_name 
 FROM employee_departments
-WHERE dept_name = 'Sales'
+WHERE dept_name = 'Sales';
 
 
 -- 7. List all employees in sales AND development departments with employee number, full name, and department name --
@@ -165,12 +169,11 @@ WHERE dept_name = 'Sales'
 UNION 
 SELECT first_name, last_name, emp_no, dept_name 
 FROM employee_departments
-WHERE dept_name LIKE 'Development'
+WHERE dept_name LIKE 'Development';
 
 -- 8. List frequency count of employees last name in DESC 
-SELECT COUNT(last_name) AS last_name_count, last_name FROM employees
+SELECT COUNT(last_name) AS last_name_count, last_name 
+FROM employees
 GROUP BY last_name
-ORDER BY (last_name_count) DESC
-
--- -- -- -- -- -- -- -- -- -- -- -- BONUS -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+ORDER BY (last_name_count) DESC;
 
