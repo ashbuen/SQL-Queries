@@ -134,6 +134,16 @@ de.dept_no=d.dept_no;
 
 SELECT * FROM departments_and_employees;
 
+SELECT emp_no, first_name, last_name FROM employees
+WHERE emp_no IN(
+	SELECT emp_no
+	FROM departments_and_employees
+	WHERE (dept_name, dept_no) IN(
+	SELECT dept_name, dept_no
+	FROM departments_and_employees
+	)
+)
+
 SELECT * FROM departments_and_employees
 WHERE dept_no IN(
 	SELECT dept_no 
@@ -141,8 +151,8 @@ WHERE dept_no IN(
 	WHERE emp_no IN(
 	SELECT emp_no
 	FROM employees
-	WHERE first_name IN(
-	SELECT first_name
+	WHERE (first_name, last_name) IN(
+	SELECT first_name, last_name
 	FROM employees
 	)
 	)
