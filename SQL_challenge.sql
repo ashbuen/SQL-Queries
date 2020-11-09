@@ -125,4 +125,39 @@ WHERE dept_no IN(
 	)
 	)
 );
--- 4.
+-- 4. List dept of each employee with employee number, full name, and department name --
+CREATE VIEW departments_and_employees AS
+SELECT de.emp_no, de.dept_no, d.dept_name
+FROM dept_emp AS de
+INNER JOIN departments AS d ON
+de.dept_no=d.dept_no;
+
+SELECT * FROM departments_and_employees;
+
+SELECT * FROM departments_and_employees
+WHERE dept_no IN(
+	SELECT dept_no 
+	FROM dept_manager
+	WHERE emp_no IN(
+	SELECT emp_no
+	FROM employees
+	WHERE first_name IN(
+	SELECT first_name
+	FROM employees
+	)
+	)
+)
+
+
+
+-- 5. List full name and sex of employees with first name "Hercules" and last name begins with "B" --
+
+-- 6. List all employees in sales department with full name, employee number and department name --
+
+-- 7. List all employees in sales AND development departments with employee number, full name, and department name --
+
+-- 8. List frequency count of employees last name in DESC 
+
+
+-- -- -- -- -- -- -- -- -- -- -- -- BONUS -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
