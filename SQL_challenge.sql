@@ -29,8 +29,9 @@ CREATE TABLE "departments" (
 );
 
 CREATE TABLE "salaries" (
-    "emp_no" VARCHAR   NOT NULL,
+    "emp_no" INT   NOT NULL,
     "salary" INT   NOT NULL
+     )
 );
 
 CREATE TABLE "titles" (
@@ -77,8 +78,14 @@ SELECT * FROM salaries
 SELECT * FROM titles
 
 -- 1. List employee number, full name, sex, and salary --
-SELECT emp_no, first_name, last_name, sex FROM employees 
-SELECT emp_no, salary FROM salaries
+CREATE VIEW employee_salary AS
+SELECT e.emp_no, e.first_name, e.last_name, e.sex, s.salary
+FROM employees AS e
+INNER JOIN salaries AS s ON
+e.emp_no=s.emp_no
+
+SELECT * FROM employee_salary
+
 
 -- 2. List full name and hire date for employees hired in 1986 --
 SELECT first_name, last_name, hire_date
@@ -146,7 +153,10 @@ f.first_name=l.first_name
 SELECT * FROM Hercules_B
 
 -- 6. List all employees in sales department with full name, employee number and department name --
-SELECT first_name, last_name, emp_no FROM employees
+CREATE VIEW sales AS
+SELECT first_name, last_name, emp_no, dept_name 
+FROM employee_departments
+WHERE dept_name = '%sales'
 
 
 

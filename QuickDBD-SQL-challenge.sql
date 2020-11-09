@@ -30,8 +30,8 @@ CREATE TABLE "departments" (
 );
 
 CREATE TABLE "salaries" (
-    "emp_no" VARCHAR   NOT NULL,
-    "salary" INT   NOT NULL
+    "emp_no" INT   NOT NULL,
+    "salary" int   NOT NULL
 );
 
 CREATE TABLE "titles" (
