@@ -83,22 +83,6 @@ FROM employees
 WHERE hire_date LIKE '%1986';
 
 -- 3. List manager's full name with employee number, dept number, dept name --
-SELECT title FROM titles
-WHERE title_id IN(
-	SELECT emp_title FROM employees
-	WHERE emp_title IN(
-	SELECT emp_no FROM employees
-	WHERE emp_title IN(
-	SELECT title_id FROM titles
-	WHERE title IN(
-	SELECT title FROM titles
-	WHERE title LIKE 'manager'
-	)
-	)
-	)
-);
-
-
 CREATE VIEW managers AS
 SELECT di.emp_no, di.dept_no, di.dept_name, e.first_name, e.last_name, e.emp_title
 FROM departments_info AS di
@@ -138,7 +122,25 @@ INNER JOIN employees AS e ON
 di.emp_no=e.emp_no;
 
 SELECT * FROM employee_departments
+
 -- 5. List full name and sex of employees with first name "Hercules" and last name begins with "B" --
+CREATE VIEW last_names_B AS
+SELECT first_name, last_name, sex FROM employees
+WHERE last_name LIKE ('B%')
+SELECT * FROM last_names_B
+
+CREATE VIEW first_name_Hercules AS
+SELECT first_name, last_name, sex FROM employees
+WHERE first_name LIKE '%Hercules'
+SELECT * FROM first_name_Hercules
+
+CREATE VIEW Hercules_B AS
+SELECT f.first_name, l.last_name, f.sex
+FROM first_name_Hercules as f
+INNER JOIN last_names_B AS l ON
+f.first_name=l.first_name
+
+SELECT * FROM Hercules_B
 
 -- 6. List all employees in sales department with full name, employee number and department name --
 
